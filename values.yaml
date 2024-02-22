@@ -1,0 +1,79 @@
+nodeClasses: []
+# nodeClasses:
+#   - name: my-nodeclass
+#     amiFamily: AL2
+#     amiSelectorTerms:
+#       - name: amazon-eks-node-1.28-v20240213
+#     blockDeviceMappings:
+#       - deviceName: /dev/xvda
+#         ebs:
+#           volumeSize: 50Gi
+#           volumeType: gp3
+#     role: my-cluster-name-role
+#     securityGroupSelectorTerms:
+#       - tags:
+#           karpenter.sh/discovery: my-cluster-name
+#       - tags:
+#           karpenter.sh/discovery: eks-common-webapps
+#     subnetSelectorTerms:
+#       - tags:
+#           Tier: k8s-private
+#     tags:
+#       eks:cluster-name: my-cluster-name
+#       karpenter.k8s.aws/cluster: my-cluster-name
+# 
+nodePools: []
+# nodePools:
+#   - name: my-node-pool
+#     disruption:
+#       budgets:
+#         # weekdays schedule
+#         - schedule: "0 * * * 1-5"
+#           duration: 24h
+#           nodes: "3"
+#         # weekends schedule
+#         - schedule: "0 * * * 0,6"
+#           duration: 24h
+#           nodes: 10% 
+#     consolidationPolicy: WhenUnderutilized
+#     expireAfter: Never
+#     labels:
+#       jamf.com/role-worker: "true"
+#       jamf/pro: primary
+#     limits:
+#       cpu: "1200"
+#       memory: 9600Gi
+#     requirements:
+#       - key: karpenter.sh/capacity-type
+#         operator: In
+#         values:
+#           - on-demand
+#       - key: karpenter.k8s.aws/instance-category
+#         operator: In
+#         values:
+#           - r
+#       - key: karpenter.k8s.aws/instance-cpu
+#         operator: In
+#         values:
+#           - "8"
+#           - "16"
+#           - "32"
+#       - key: karpenter.k8s.aws/instance-hypervisor
+#         operator: In
+#         values:
+#           - nitro
+#       - key: kubernetes.io/os
+#         operator: In
+#         values:
+#           - linux
+#       - key: kubernetes.io/arch
+#         operator: In
+#         values:
+#           - amd64
+#       # we just want plain old SSDs
+#       - key: karpenter.k8s.aws/instance-local-nvme
+#         operator: DoesNotExist
+#     startupTaints:
+#       - effect: NoSchedule
+#         key: nodetaint/blocking
+#     weight: 50
