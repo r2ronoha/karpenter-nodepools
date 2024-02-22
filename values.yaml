@@ -25,6 +25,7 @@ nodeClasses: []
 nodePools: []
 # nodePools:
 #   - name: my-node-pool
+#     nodeClassRefName: my-nodeclass
 #     disruption:
 #       budgets:
 #         # weekdays schedule
