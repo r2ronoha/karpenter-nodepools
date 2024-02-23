@@ -1,10 +1,9 @@
 {{- range $nodepools := .Values.nodePools }}
-{{- $labels := .labels }}
 ---
 apiVersion: karpenter.sh/v1beta1
 kind: NodePool
 metadata:
-  labels: {{ toYaml $labels | nindent 4 }}
+  labels: {{ toYaml .labels | nindent 4 }}
   name: {{ .name }}
 spec:
   {{ if .disruption }}
@@ -20,7 +19,7 @@ spec:
   {{ end }}
   template:
     metadata:
-      labels: {{ toYaml $labels | nindent 6 }}
+      labels: {{ toYaml .labels | nindent 8 }}
     spec:
       nodeClassRef:
         name: {{ .nodeClassRefName }}
