@@ -24,6 +24,13 @@ spec:
       nodeClassRef:
         name: {{ $nodepools.nodeClassRefName }}
       requirements: {{ toYaml $nodepools.requirements | nindent 8 }}
+       {{ if $nodepools.startupTaints }}
       startupTaints: {{ toYaml $nodepools.startupTaints | nindent 8 }}
+      {{ end }}
+       {{ if $nodepools.startupTaints }}
+      taints: {{ toYaml $nodepools.taints | nindent 8 }}
+      {{ end }}
+  {{ if $nodepools.weight }}
   weight: {{ $nodepools.weight }}
+  {{ end }}
 {{- end }}
