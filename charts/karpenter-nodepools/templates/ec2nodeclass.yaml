@@ -1,0 +1,17 @@
+{{- range $nodeclasses := .Values.nodeClasses }}
+---
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
+metadata:
+  name: {{ .name }}
+spec:
+  amiFamily: {{ .amiFamily }}
+  {{ if  .amiSelectorTerms }}
+  amiSelectorTerms:  {{ toYaml .amiSelectorTerms | nindent 4 }}
+  {{ end }}
+  blockDeviceMappings: {{ toYaml .blockDeviceMappings | nindent 4 }}
+  role: {{ .role }}
+  securityGroupSelectorTerms: {{ toYaml .securityGroupSelectorTerms | nindent 4 }}
+  subnetSelectorTerms: {{ toYaml .subnetSelectorTerms | nindent 4 }}
+  tags: {{ toYaml .tags | nindent 4 }}
+{{- end }}
