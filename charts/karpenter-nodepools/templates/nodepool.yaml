@@ -1,36 +1,37 @@
 {{- range $nodepools := .Values.nodePools }}
+{{- $labels := .labels }}
 ---
 apiVersion: karpenter.sh/v1beta1
 kind: NodePool
 metadata:
-  labels: {{ toYaml $nodepools.labels | nindent 4 }}
-  name: {{ $nodepools.name }}
+  labels: {{ toYaml $labels | nindent 4 }}
+  name: {{ .name }}
 spec:
-  {{ if $nodepools.disruption }}
+  {{ if .disruption }}
   disruption:
-    consolidationPolicy: {{ $nodepools.disruption.consolidationPolicy }}
-    expireAfter: {{ $nodepools.disruption.expireAfter }}
-    {{ if $nodepools.disruption.budgets }}
-    budgets: {{ toYaml $nodepools.disruption.budgets | nindent 6 }}
+    consolidationPolicy: {{ .disruption.consolidationPolicy }}
+    expireAfter: {{ .disruption.expireAfter }}
+    {{ if .disruption.budgets }}
+    budgets: {{ toYaml .disruption.budgets | nindent 6 }}
     {{ end }}
   {{ end }}
-  {{ if $nodepools.limits }}
-  limits: {{ toYaml $nodepools.limits | nindent 4 }}
+  {{ if .limits }}
+  limits: {{ toYaml .limits | nindent 4 }}
   {{ end }}
   template:
     metadata:
-      labels: {{ toYaml $nodepools.labels | nindent 6 }}
+      labels: {{ toYaml $labels | nindent 6 }}
     spec:
       nodeClassRef:
-        name: {{ $nodepools.nodeClassRefName }}
-      requirements: {{ toYaml $nodepools.requirements | nindent 8 }}
-       {{ if $nodepools.startupTaints }}
-      startupTaints: {{ toYaml $nodepools.startupTaints | nindent 8 }}
+        name: {{ .nodeClassRefName }}
+      requirements: {{ toYaml .requirements | nindent 8 }}
+       {{ if .startupTaints }}
+      startupTaints: {{ toYaml .startupTaints | nindent 8 }}
       {{ end }}
-       {{ if $nodepools.startupTaints }}
-      taints: {{ toYaml $nodepools.taints | nindent 8 }}
+       {{ if .startupTaints }}
+      taints: {{ toYaml .taints | nindent 8 }}
       {{ end }}
-  {{ if $nodepools.weight }}
-  weight: {{ $nodepools.weight }}
+  {{ if .weight }}
+  weight: {{ .weight }}
   {{ end }}
 {{- end }}
