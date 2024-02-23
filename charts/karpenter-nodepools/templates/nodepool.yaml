@@ -3,13 +3,13 @@
 apiVersion: karpenter.sh/v1beta1
 kind: NodePool
 metadata:
-  labels:
-  name: $nodepools.name
+  labels: {{ toYaml $nodepools.labels | nindent 4 }}
+  name: {{ $nodepools.name }}
 spec:
   {{ if $nodepools.disruption }}
   disruption:
-    consolidationPolicy: $nodepools.disruption.consolidationPolicy
-    expireAfter: $nodepools.disruption.expireAfter
+    consolidationPolicy: {{ $nodepools.disruption.consolidationPolicy }}
+    expireAfter: {{ $nodepools.disruption.expireAfter }}
     {{ if $nodepools.disruption.budgets }}
     budgets: {{ toYaml $nodepools.disruption.budgets | nindent 6 }}
     {{ end }}
@@ -22,8 +22,8 @@ spec:
       labels: {{ toYaml $nodepools.labels | nindent 6 }}
     spec:
       nodeClassRef:
-        name: $nodepools.nodeClassRefName
+        name: {{ $nodepools.nodeClassRefName }}
       requirements: {{ toYaml $nodepools.requirements | nindent 8 }}
       startupTaints: {{ toYaml $nodepools.startupTaints | nindent 8 }}
-  weight: $nodepools.weight
+  weight: {{ $nodepools.weight }}
 {{- end }}
